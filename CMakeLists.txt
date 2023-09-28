@@ -3,7 +3,9 @@ project(Glory3d)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Glory3d src/main.cpp
+add_executable(
+        Glory3d
+        src/main.cpp
         src/output/FrameOutput.cpp
         src/output/FrameOutput.h
         src/output/ConsoleFrameOutput.cpp
@@ -35,6 +37,7 @@ add_executable(Glory3d src/main.cpp
         src/spatial3d/primitives/Scene3d.cpp
         src/spatial3d/primitives/Scene3d.h
         src/spatial3d/utils3d.cpp
-        src/spatial3d/utils3d.h)
+        src/spatial3d/utils3d.h
+)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
