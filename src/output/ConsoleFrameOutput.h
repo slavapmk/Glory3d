@@ -5,13 +5,15 @@
 #ifndef GLORY3D_CONSOLEFRAMEOUTPUT_H
 #define GLORY3D_CONSOLEFRAMEOUTPUT_H
 
+#include <vector>
+#include <string>
 #include "FrameOutput.h"
 
 class ConsoleFrameOutput : public FrameOutput {
 public:
     ConsoleFrameOutput();
 
-    void render(double **frame, std::tuple<int, int> frameSize) override;
+    void render(double **frame, std::tuple<int, int> frameSize, std::vector<std::string> debug) override;
 
     std::tuple<int, int> getViewportSizes() override;
 
@@ -20,7 +22,7 @@ private:
 
     static double getCharProportion();
 
-    static void setConsoleChar(short x, short y, char newChar) ;
+    static void setConsoleChar(short x, short y, char newChar);
 };
 
 

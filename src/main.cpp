@@ -1,20 +1,35 @@
 #include <windows.h>
 #include <chrono>
+#include <cmath>
 #include "output/ConsoleFrameOutput.h"
 
 
 double fov = 60;
 
 
+long long int getTimeMillis();
 
 int main() {
+    auto lastFrameStartRender = getTimeMillis();
 
     auto out = ConsoleFrameOutput();
 
     double rx = 0, ry = 0;
 
     bool active = true;
+    bool activeDebug = false;
+
+    std::vector<std::string> debugMenu = {
+            "----------------------",
+            "FPS: ",
+            "----------------------"
+    };
+    std::vector<std::string> emptyMenu;
+
     while (active) {
+        auto currentTime = getTimeMillis();
+        auto fromLast = currentTime - lastFrameStartRender;
+        lastFrameStartRender = currentTime;
 
         short u = GetAsyncKeyState(VK_UP);
         short d = GetAsyncKeyState(VK_DOWN);
@@ -22,6 +37,12 @@ int main() {
         short r = GetAsyncKeyState(VK_RIGHT);
 
         if (GetAsyncKeyState(VK_ESCAPE) != 0) active = false;
+        if (GetAsyncKeyState(VK_F3) != 0) activeDebug = !activeDebug;
+
+        if (activeDebug) {
+            double fps = 1 / ((double) fromLast / 1000);
+            debugMenu[1] = "FPS: " + std::to_string(fps);
+        }
 
         if (u != 0) ry -= 0.5;
         if (d != 0) ry += 0.5;
@@ -47,6 +68,12 @@ int main() {
             }
         }
 
-        out.render(frame, tuple);
+        out.render(frame, tuple, activeDebug ? debugMenu : emptyMenu);
     }
+}
+
+long long getTimeMillis() {
+    return std::chrono::time_point_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now()
+    ).time_since_epoch().count();
 }
