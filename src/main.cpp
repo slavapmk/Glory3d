@@ -38,6 +38,8 @@ int main() {
 
         if (GetAsyncKeyState(VK_ESCAPE) != 0) active = false;
         if (GetAsyncKeyState(VK_F3) != 0) activeDebug = !activeDebug;
+        if (GetAsyncKeyState(0x52) != 0)rx = 0, ry = 0;
+
 
         if (activeDebug) {
             double fps = 1 / ((double) fromLast / 1000);
