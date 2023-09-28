@@ -6,6 +6,9 @@
 
 const auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
+const char gradient[] = " .:;+=xX$&";
+int gradientLength = sizeof(gradient) / sizeof(char) - 1;
+
 void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize) {
     const auto [width, height] = getConsoleDimensions();
 
@@ -14,14 +17,13 @@ void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize) 
             frameSize,
             {width, height}
     );
-
     DWORD charsWritten;
     COORD position = {0, 0};
     SetConsoleCursorPosition(handle, position);
     for (short y = 0; y < height; y++) {
         const auto row = new char[width];
         for (short x = 0; x < width; x++)
-            row[x] = resized[y][x] > 0.5 ? 'X' : '.';
+            row[x] = gradient[(int) (resized[y][x] * (gradientLength - 1))];
         WriteConsoleOutputCharacter(
                 handle,
                 row,
