@@ -26,7 +26,7 @@ int main() {
     };
     std::vector<std::string> emptyMenu;
 
-    while (active) {
+    while (true) {
         auto currentTime = getTimeMillis();
         auto fromLast = currentTime - lastFrameStartRender;
         lastFrameStartRender = currentTime;
@@ -36,20 +36,19 @@ int main() {
         short l = GetAsyncKeyState(VK_LEFT);
         short r = GetAsyncKeyState(VK_RIGHT);
 
-        if (GetAsyncKeyState(VK_ESCAPE) != 0) active = false;
-        if (GetAsyncKeyState(VK_F3) != 0) activeDebug = !activeDebug;
+        if (GetAsyncKeyState(VK_ESCAPE) != 0) return 0;
+        if (GetAsyncKeyState(VK_F3) & 1) activeDebug = !activeDebug;
         if (GetAsyncKeyState(0x52) != 0)rx = 0, ry = 0;
-
 
         if (activeDebug) {
             double fps = 1 / ((double) fromLast / 1000);
             debugMenu[1] = "FPS: " + std::to_string(fps);
         }
 
-        if (u != 0) ry -= 0.5;
-        if (d != 0) ry += 0.5;
-        if (l != 0) rx -= 0.5;
-        if (r != 0) rx += 0.5;
+        if (u & (1 << 15)) ry -= 0.5;
+        if (d & (1 << 15)) ry += 0.5;
+        if (l & (1 << 15)) rx -= 0.5;
+        if (r & (1 << 15)) rx += 0.5;
 
         const std::tuple<int, int> &tuple = out.getViewportSizes();
         const auto [width, height] = tuple;
