@@ -1,8 +1,11 @@
 #include <windows.h>
 #include <chrono>
+#include <thread>
+#include <cmath>
 #include "output/ConsoleFrameOutput.h"
 
 double fov = 60;
+int maxFps = 30;
 
 long long int getTimeMillis();
 
@@ -14,22 +17,19 @@ int main() {
     double rx = 0, ry = 0;
 
     bool activeDebug = false;
-
     std::vector<std::string> debugMenu = {
             "----------------------",
-            "FPS: ",
+            "| FPS: ",
             "----------------------"
     };
     std::vector<std::string> emptyMenu;
 
-    auto lastFrameStartRender = getTimeMillis();
     bool isInFocus;
+    double fps;
     while (true) {
-        isInFocus = (GetForegroundWindow() == consoleWindow);
-        auto currentTime = getTimeMillis();
-        auto fromLast = currentTime - lastFrameStartRender;
-        lastFrameStartRender = currentTime;
+        auto startRenderTime = getTimeMillis();
 
+        isInFocus = (GetForegroundWindow() == consoleWindow);
         if (isInFocus && GetAsyncKeyState(VK_ESCAPE) != 0) return 0;
         if (isInFocus && GetAsyncKeyState(VK_F3) & 1) activeDebug = !activeDebug;
         if (isInFocus && GetAsyncKeyState(0x52) != 0)rx = 0, ry = 0;
@@ -38,10 +38,8 @@ int main() {
         if (isInFocus && GetAsyncKeyState(VK_LEFT) & (1 << 15)) rx -= 0.5;
         if (isInFocus && GetAsyncKeyState(VK_RIGHT) & (1 << 15)) rx += 0.5;
 
-        if (activeDebug) {
-            double fps = 1 / ((double) fromLast / 1000);
+        if (activeDebug)
             debugMenu[1] = "FPS: " + std::to_string(fps);
-        }
 
         const std::tuple<int, int> &tuple = out.getViewportSizes();
         const auto [width, height] = tuple;
@@ -63,6 +61,13 @@ int main() {
         }
 
         out.render(frame, tuple, activeDebug ? debugMenu : emptyMenu);
+
+        if (maxFps > 0)
+            std::this_thread::sleep_for(std::chrono::milliseconds(
+                    (int) floor(1000.0 / maxFps - (double) (getTimeMillis() - startRenderTime))
+            ));
+
+        fps = 1.0 / ((double) (getTimeMillis() - startRenderTime) / 1000);
     }
 }
 
