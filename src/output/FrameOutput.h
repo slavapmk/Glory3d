@@ -7,10 +7,12 @@
 
 
 #include <tuple>
+#include <vector>
+#include <string>
 
 class FrameOutput {
 public:
-    virtual void render(double **frame, std::tuple<int, int> dimension) {}
+    virtual void render(double **frame, std::tuple<int, int> dimension, std::vector<std::string> debug) {}
 
     virtual std::tuple<int, int> getViewportSizes() { return {}; }
 };

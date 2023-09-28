@@ -3,10 +3,14 @@
 #include <windows.h>
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 const auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
-void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize) {
+const char gradient[] = " .:;+=xX$&";
+int gradientLength = sizeof(gradient) / sizeof(char) - 1;
+
+void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize, const std::vector<std::string> debug) {
     const auto [width, height] = getConsoleDimensions();
 
     const auto resized = resizeMatrix(
@@ -14,14 +18,21 @@ void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize) 
             frameSize,
             {width, height}
     );
-
     DWORD charsWritten;
     COORD position = {0, 0};
     SetConsoleCursorPosition(handle, position);
+
+    unsigned long long int debugSize = debug.size();
+
     for (short y = 0; y < height; y++) {
         const auto row = new char[width];
         for (short x = 0; x < width; x++)
-            row[x] = resized[y][x] > 0.5 ? 'X' : '.';
+            row[x] = gradient[(int) (resized[y][x] * (gradientLength - 1))];
+
+        if (y < debugSize)
+            for (int x = 0; x < debug[y].length(); x++)
+                row[x] = debug[y][x];
+
         WriteConsoleOutputCharacter(
                 handle,
                 row,
