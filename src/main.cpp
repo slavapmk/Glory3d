@@ -37,6 +37,8 @@ int main() {
         if (isInFocus && GetAsyncKeyState(VK_DOWN) & (1 << 15)) ry += 0.5;
         if (isInFocus && GetAsyncKeyState(VK_LEFT) & (1 << 15)) rx -= 0.5;
         if (isInFocus && GetAsyncKeyState(VK_RIGHT) & (1 << 15)) rx += 0.5;
+        if (isInFocus && GetAsyncKeyState(VK_OEM_PLUS) & 1) fov++;
+        if (isInFocus && GetAsyncKeyState(VK_OEM_MINUS) & 1) fov--;
 
         if (activeDebug)
             debugMenu[1] = "FPS: " + std::to_string(fps);
