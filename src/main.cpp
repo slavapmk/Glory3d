@@ -5,7 +5,7 @@
 #include "output/ConsoleFrameOutput.h"
 
 double fov = 60;
-int maxFps = 30;
+int maxFps = 0;
 
 long long int getTimeMillis();
 
@@ -32,11 +32,11 @@ int main() {
         isInFocus = (GetForegroundWindow() == consoleWindow);
         if (isInFocus && GetAsyncKeyState(VK_ESCAPE) != 0) return 0;
         if (isInFocus && GetAsyncKeyState(VK_F3) & 1) activeDebug = !activeDebug;
-        if (isInFocus && GetAsyncKeyState(0x52) != 0)rx = 0, ry = 0;
-        if (isInFocus && GetAsyncKeyState(VK_UP) & (1 << 15)) ry -= 0.5;
-        if (isInFocus && GetAsyncKeyState(VK_DOWN) & (1 << 15)) ry += 0.5;
-        if (isInFocus && GetAsyncKeyState(VK_LEFT) & (1 << 15)) rx -= 0.5;
-        if (isInFocus && GetAsyncKeyState(VK_RIGHT) & (1 << 15)) rx += 0.5;
+        if (isInFocus && GetAsyncKeyState(0x52) != 0) rx = 0, ry = 0;
+        if (isInFocus && GetAsyncKeyState(VK_UP) & (1 << 15)) ry -= 20 / fps;
+        if (isInFocus && GetAsyncKeyState(VK_DOWN) & (1 << 15)) ry += 20 / fps;
+        if (isInFocus && GetAsyncKeyState(VK_LEFT) & (1 << 15)) rx -= 20 / fps;
+        if (isInFocus && GetAsyncKeyState(VK_RIGHT) & (1 << 15)) rx += 20 / fps;
         if (isInFocus && GetAsyncKeyState(VK_OEM_PLUS) & 1) fov++;
         if (isInFocus && GetAsyncKeyState(VK_OEM_MINUS) & 1) fov--;
 
