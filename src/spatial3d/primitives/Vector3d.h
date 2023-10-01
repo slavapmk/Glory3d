@@ -1,7 +1,3 @@
-//
-// Created by Slava on 27.09.2023.
-//
-
 #ifndef GLORY3D_VECTOR3D_H
 #define GLORY3D_VECTOR3D_H
 
@@ -13,6 +9,11 @@ class Vector3d {
 public:
     Direction3d direction;
     Point3d point;
+    double length;
+
+    Vector3d(Point3d *point, Direction3d *direction);
+
+    Vector3d(Point3d *point, Direction3d *direction, double length);
 };
 
 
