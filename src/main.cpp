@@ -5,7 +5,7 @@
 #include "output/ConsoleFrameOutput.h"
 
 double fov = 60;
-int maxFps = 0;
+int maxFps = 00;
 
 long long int getTimeMillis();
 
@@ -17,12 +17,6 @@ int main() {
     double rx = 0, ry = 0;
 
     bool activeDebug = false;
-    std::vector<std::string> debugMenu = {
-            "----------------------",
-            "| FPS: ",
-            "----------------------"
-    };
-    std::vector<std::string> emptyMenu;
 
     bool isInFocus;
     double fps;
@@ -39,9 +33,6 @@ int main() {
         if (isInFocus && GetAsyncKeyState(VK_RIGHT) & (1 << 15)) rx += 20 / fps;
         if (isInFocus && GetAsyncKeyState(VK_OEM_PLUS) & 1) fov++;
         if (isInFocus && GetAsyncKeyState(VK_OEM_MINUS) & 1) fov--;
-
-        if (activeDebug)
-            debugMenu[1] = "FPS: " + std::to_string(fps);
 
         const std::tuple<int, int> &tuple = out.getViewportSizes();
         const auto [width, height] = tuple;
@@ -62,14 +53,16 @@ int main() {
             }
         }
 
-        out.render(frame, tuple, activeDebug ? debugMenu : emptyMenu);
+        out.render(frame, tuple, {"FPS: " + std::to_string(fps)}, activeDebug);
 
         if (maxFps > 0)
             std::this_thread::sleep_for(std::chrono::milliseconds(
                     (int) floor(1000.0 / maxFps - (double) (getTimeMillis() - startRenderTime))
             ));
 
-        fps = 1.0 / ((double) (getTimeMillis() - startRenderTime) / 1000);
+        double d = (double) (getTimeMillis() - startRenderTime) / 1000;
+        if (d != 0)
+            fps = 1.0 / d;
     }
 }
 

@@ -10,7 +10,45 @@ const auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
 const char gradient[] = " .:;+=xX$&";
 int gradientLength = sizeof(gradient) / sizeof(char) - 1;
 
-void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize, const std::vector<std::string> debug) {
+std::string multiple(const std::string &input, unsigned int times) {
+    std::string output;
+    for (int i = 0; i < times; ++i)
+        output += input;
+    return output;
+}
+
+std::vector<std::string> parseDebug(const std::vector<std::string> &info) {
+    std::vector<std::string> out;
+
+    unsigned long long max = 0;
+    for (const auto &item: info)
+        if (max < item.size())
+            max = item.size();
+
+
+    std::string line = multiple("-", max + 4);
+
+    out.push_back(line);
+
+    for (const auto &item: info) {
+        out.push_back(
+                "| " +
+                item +
+                multiple(" ", max - item.size()) +
+                " |"
+        );
+    }
+
+    out.push_back(line);
+
+    return out;
+}
+
+void ConsoleFrameOutput::render(
+        double **frame, std::tuple<int, int> frameSize,
+        std::vector<std::string> debugInfo,
+        bool showDebug
+) {
     const auto [width, height] = getConsoleDimensions();
 
     const auto resized = resizeMatrix(
@@ -22,6 +60,7 @@ void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize, 
     COORD position = {0, 0};
     SetConsoleCursorPosition(handle, position);
 
+    const std::vector<std::string> &debug = parseDebug(debugInfo);
     unsigned long long int debugSize = debug.size();
 
     for (short y = 0; y < height; y++) {
@@ -29,7 +68,7 @@ void ConsoleFrameOutput::render(double **frame, std::tuple<int, int> frameSize, 
         for (short x = 0; x < width; x++)
             row[x] = gradient[(int) (resized[y][x] * (gradientLength - 1))];
 
-        if (y < debugSize)
+        if (showDebug && y < debugSize)
             for (int x = 0; x < debug[y].length(); x++)
                 row[x] = debug[y][x];
 

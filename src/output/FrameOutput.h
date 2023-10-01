@@ -12,7 +12,7 @@
 
 class FrameOutput {
 public:
-    virtual void render(double **frame, std::tuple<int, int> dimension, std::vector<std::string> debug) {}
+    virtual void render(double **frame, std::tuple<int, int> dimension, std::vector<std::string> debug, bool b) {}
 
     virtual std::tuple<int, int> getViewportSizes() { return {}; }
 };

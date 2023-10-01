@@ -13,7 +13,7 @@ class ConsoleFrameOutput : public FrameOutput {
 public:
     ConsoleFrameOutput();
 
-    void render(double **frame, std::tuple<int, int> frameSize, std::vector<std::string> debug) override;
+    void render(double **frame, std::tuple<int, int> frameSize, std::vector<std::string> debug, bool showDebug) override;
 
     std::tuple<int, int> getViewportSizes() override;
 
