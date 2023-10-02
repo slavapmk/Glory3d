@@ -40,6 +40,8 @@ add_executable(
         src/spatial3d/utils3d.h
         src/CpuVisualizer.cpp
         src/CpuVisualizer.h
+        src/utils/timeUtils.cpp
+        src/utils/timeUtils.h
 )
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
