@@ -11,6 +11,7 @@
 class Polygon3d {
 public:
     Point3d a,b,c;
+    Polygon3d(Point3d a, Point3d b, Point3d c);
 };
 
 

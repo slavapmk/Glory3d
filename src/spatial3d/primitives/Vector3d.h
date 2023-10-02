@@ -11,9 +11,9 @@ public:
     Point3d point;
     double length;
 
-    Vector3d(Point3d *point, Direction3d *direction);
+    Vector3d(Point3d point, Direction3d direction);
 
-    Vector3d(Point3d *point, Direction3d *direction, double length);
+    Vector3d(Point3d point, Direction3d direction, double length);
 };
 
 
