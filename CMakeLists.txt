@@ -34,10 +34,12 @@ add_executable(
         src/spatial3d/primitives/Cube3d.h
         src/spatial3d/primitives/Camera3d.cpp
         src/spatial3d/primitives/Camera3d.h
-        src/spatial3d/primitives/Scene3d.cpp
-        src/spatial3d/primitives/Scene3d.h
+        src/spatial3d/Scene3d.cpp
+        src/spatial3d/Scene3d.h
         src/spatial3d/utils3d.cpp
         src/spatial3d/utils3d.h
+        src/CpuVisualizer.cpp
+        src/CpuVisualizer.h
 )
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")

@@ -13,7 +13,7 @@ std::tuple<double, double, double> scalarIntersect(
         Point3d polygonPoint
 );
 
-Point3d* intersectTriangle(
+Point3d *intersectTriangle(
         Polygon3d polygon,
         Point3d ray_origin,
         Direction3d rayDirection
@@ -25,4 +25,4 @@ std::tuple<Point3d, Polygon3d> *intersectPolygons(
         int polygonsCount
 );
 
-#endif //GLORY3D_UTILS3D_H
+#endif

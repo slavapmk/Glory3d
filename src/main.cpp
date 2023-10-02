@@ -3,6 +3,7 @@
 #include <thread>
 #include <cmath>
 #include "output/ConsoleFrameOutput.h"
+#include "CpuVisualizer.h"
 
 double fov = 60;
 int maxFps = 00;
@@ -10,6 +11,15 @@ int maxFps = 00;
 long long int getTimeMillis();
 
 int main() {
+    Scene3d scene = Scene3d(
+            {},
+            Camera3d(
+                    Point3d(0, 0, 0),
+                    Rotation3d(0, 0, 0),
+                    30
+            )
+    );
+
     HWND consoleWindow = GetConsoleWindow();
 
     auto out = ConsoleFrameOutput();
@@ -37,23 +47,7 @@ int main() {
         const std::tuple<int, int> &tuple = out.getViewportSizes();
         const auto [width, height] = tuple;
 
-        auto **frame = new double *[width];
-
-        const auto maxSide = width > height ? width : height;
-
-        for (int y = 0; y < height; y++) {
-            frame[y] = new double[width];
-            for (int x = 0; x < width; x++) {
-                double xDegrees = (x - (double) (width - 1) / 2) / (maxSide - 1) * fov;
-                double yDegrees = (y - (double) (height - 1) / 2) / (maxSide - 1) * fov;
-
-                if (xDegrees > rx - 10 && xDegrees < rx + 10 && yDegrees > ry - 10 && yDegrees < ry + 10) {
-                    frame[y][x] = 1;
-                }
-            }
-        }
-
-        out.render(frame, tuple, {"FPS: " + std::to_string(fps)}, activeDebug);
+        out.render(render(scene, width, height), tuple, {"FPS: " + std::to_string(fps)}, activeDebug);
 
         if (maxFps > 0)
             std::this_thread::sleep_for(std::chrono::milliseconds(

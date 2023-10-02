@@ -12,6 +12,8 @@ public:
     Renderable3d(Point3d position, Rotation3d rotation, std::vector<Polygon3d> model);
 
     Renderable3d(Point3d position, Rotation3d rotation, Scale3d scale, std::vector<Polygon3d> model);
+
+    std::vector<Polygon3d> finalState();
 };
 
 #endif
