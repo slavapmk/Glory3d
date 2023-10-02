@@ -1,4 +1,6 @@
 #include "CpuVisualizer.h"
+#include "spatial3d/primitives/Direction3d.h"
+#include "spatial3d/utils3d.h"
 
 double **render(const Scene3d &scene, int width, int height) {
     int density = width > height ? width : height;
@@ -13,13 +15,29 @@ double **render(const Scene3d &scene, int width, int height) {
     for (int y = 0; y < height; y++) {
         frame[y] = new double[width];
         for (int x = 0; x < width; x++) {
-            double xDegrees = (x - (double) (width - 1) / 2) / (density - 1) * scene.camera.fov;
-            double yDegrees = (y - (double) (height - 1) / 2) / (density - 1) * scene.camera.fov;
+            double xDegrees = (x - (double) (width - 1) / 2) / (density - 1) * *scene.camera.fov;
+            double yDegrees = (y - (double) (height - 1) / 2) / (density - 1) * *scene.camera.fov;
 
-            if (-15 <= xDegrees && xDegrees <= 15 && -15 <= yDegrees && yDegrees <= 15)
-                frame[y][x] = 1;
-            else
-                frame[y][x] = 0;
+            Direction3d direction = Direction3d(0, 1, 0).rotate(Rotation3d(
+                    -(scene.camera.rotation.x_axis + yDegrees),
+                    0,
+                    -(scene.camera.rotation.z_axis + xDegrees)
+            ));
+
+            std::tuple<Point3d, Polygon3d> *pTuple = intersectPolygons(
+                    Vector3d(scene.camera.position, direction),
+                    allPolygons
+            );
+
+            frame[y][x] = pTuple == nullptr ? 0 : 1;
+
+//            if (pTuple == nullptr) {
+//                frame[y][x] = 0;
+//                continue;
+//            }
+//
+//            auto [intersection, polygon] = *pTuple;
+//            frame[y][x] = polygon.v;
         }
     }
 

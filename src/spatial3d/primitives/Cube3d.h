@@ -4,7 +4,7 @@
 
 #include "Renderable3d.h"
 
-class Cube3d : Renderable3d {
+class Cube3d : public Renderable3d {
 public:
     Cube3d(Point3d position, Rotation3d rotation, double edge);
 

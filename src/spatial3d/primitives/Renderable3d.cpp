@@ -17,7 +17,8 @@ std::vector<Polygon3d> Renderable3d::finalState() {
         result.emplace_back(
                 polygon.a.multiply(scale).rotate(rotation, Point3d(0, 0, 0)).add(position),
                 polygon.b.multiply(scale).rotate(rotation, Point3d(0, 0, 0)).add(position),
-                polygon.c.multiply(scale).rotate(rotation, Point3d(0, 0, 0)).add(position)
+                polygon.c.multiply(scale).rotate(rotation, Point3d(0, 0, 0)).add(position),
+                polygon.v
         );
     return result;
 }

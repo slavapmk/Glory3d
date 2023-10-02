@@ -7,7 +7,7 @@
 
 const auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
-const char gradient[] = " .:;+=xX$&";
+const char gradient[] = " `´¨·…¸ˆ˜’‚‘’:;›‹¹°–²º³~“”„ª^—¯¦÷¡!|¬•«»/\\)(+{*}×?¿[†7i><ìï=íl1vjrîcotI¤%ƒJz‡¼½‰u¢sòön@CóÌÏ3±LÍV0£Y©wçù2™üa&úô5õ4f¾ÎxyOµ6eTUž9S®ŸkÝ§ûhàÇšäPZáñDF¥bÒÿåÖÞÓèýÙdë$ÜÚ8éðø¶Gâãmpß€AÔÕŠÛqêÐgXœŽRKHÀÄEþÁN#æÅBQWÂÃÈËÉMØŒÊÑÆ";
 int gradientLength = sizeof(gradient) / sizeof(char) - 1;
 
 std::string multiple(const std::string &input, unsigned int times) {
@@ -19,28 +19,15 @@ std::string multiple(const std::string &input, unsigned int times) {
 
 std::vector<std::string> parseDebug(const std::vector<std::string> &info) {
     std::vector<std::string> out;
-
     unsigned long long max = 0;
     for (const auto &item: info)
         if (max < item.size())
             max = item.size();
-
-
     std::string line = multiple("-", max + 4);
-
     out.push_back(line);
-
-    for (const auto &item: info) {
-        out.push_back(
-                "| " +
-                item +
-                multiple(" ", max - item.size()) +
-                " |"
-        );
-    }
-
+    for (const auto &item: info)
+        out.push_back("| " + item + multiple(" ", max - item.size()) + " |");
     out.push_back(line);
-
     return out;
 }
 

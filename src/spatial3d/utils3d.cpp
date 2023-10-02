@@ -1,5 +1,6 @@
 #include "utils3d.h"
 #include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -70,19 +71,18 @@ Point3d *intersectTriangle(
 
 std::tuple<Point3d, Polygon3d> *intersectPolygons(
         Vector3d ray,
-        Polygon3d *polygons,
-        int polygonsCount
+        const std::vector<Polygon3d> &polygons
 ) {
     Point3d *closestIntersection = nullptr;
-    static Polygon3d *closestPolygon = nullptr;
+    Polygon3d *closestPolygon = nullptr;
     double *closestDistance = nullptr;
-    for (int i = 0; i < polygonsCount; ++i) {
-        Polygon3d polygon = polygons[i];
+    for (auto polygon: polygons) {
         auto intersection = intersectTriangle(polygon, ray.point, ray.direction);
         if (intersection != nullptr) {
-            auto distance = pow((intersection->x - ray.point.x), 2) +
-                            pow((intersection->y - ray.point.y), 2) +
-                            pow((intersection->z - ray.point.z), 2);
+            auto distance =
+                    pow(intersection->x - ray.point.x, 2) +
+                    pow(intersection->y - ray.point.y, 2) +
+                    pow(intersection->z - ray.point.z, 2);
 
             if (closestIntersection == nullptr || distance < *closestDistance) {
                 closestIntersection = intersection;

@@ -2,6 +2,7 @@
 #define GLORY3D_UTILS3D_H
 
 #include <tuple>
+#include <vector>
 #include "primitives/Point3d.h"
 #include "primitives/Polygon3d.h"
 #include "primitives/Direction3d.h"
@@ -21,8 +22,7 @@ Point3d *intersectTriangle(
 
 std::tuple<Point3d, Polygon3d> *intersectPolygons(
         Vector3d ray,
-        Polygon3d *polygons,
-        int polygonsCount
+        const std::vector<Polygon3d>& polygons
 );
 
 #endif

@@ -6,7 +6,10 @@
 
 class Camera3d : Object3d {
 public:
-    double fov;
+    double *fov;
+    Point3d position;
+    Rotation3d rotation;
+    Scale3d scale;
 
     Camera3d(Point3d position, Rotation3d rotation, double fov);
 

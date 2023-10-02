@@ -11,6 +11,10 @@ public:
     Camera3d camera;
 
     Scene3d(std::vector<Renderable3d> objects, Camera3d camera);
+
+    void reset();
+
+    void process(double ticks);
 };
 
 #endif
